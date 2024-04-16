@@ -1,0 +1,8 @@
+node_modules
+dist
+.nyc_output
+.coveralls.yml
+coverage
+raw.txt
+raw2.txt
+src/cliente-servidor

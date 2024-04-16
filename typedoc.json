@@ -1,0 +1,14 @@
+{
+  "entryPoints": [
+    "./src/Magic/Enums/color.ts",
+    "./src/Magic/Enums/linetype.ts",
+    "./src/Magic/Enums/rarity.ts",
+    "./src/Magic/interfaces/card.ts",
+    "./src/Magic/cardmanager.ts",
+    "./src/Magic/files.ts",
+    "./src/Magic/index.ts",
+    "./src/cliente-servidor/cliente.ts",
+    "./src/cliente-servidor/servidor.ts",
+  ],
+  "out": "./docs"
+}
