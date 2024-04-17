@@ -37,7 +37,7 @@ describe('CardCollection', () => {
         });
 
         it('should not add a card with duplicate ID to the collection', () => {
-            // Intentamos añadir una carta duplicada
+            // intentamos añadir una carta duplicada
             const duplicateCard: Card = {
                 id: 1,
                 name: 'Duplicate Card',
