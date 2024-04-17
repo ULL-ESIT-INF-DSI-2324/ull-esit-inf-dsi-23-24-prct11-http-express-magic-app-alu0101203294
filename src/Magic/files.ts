@@ -62,13 +62,20 @@ export class FileManager {
    * @param collection 
    * @returns Retorna un mapa con las cartas del usuario.
    */
-  public save(collection: Map<number, Card>): void {
-    this.createDirectoryIfNotExists();
-    for (const [cardId, card] of collection) {
-      const filePath = this.getFilePath(cardId);
-      fs.writeFileSync(filePath, JSON.stringify(card, null, 2));
-    }
-  }
+  public saveAsync(collection: Map<number, Card>): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        this.createDirectoryIfNotExists();
+        for (const [cardId, card] of collection) {
+            const filePath = this.getFilePath(cardId);
+            fs.writeFile(filePath, JSON.stringify(card, null, 2), (error) => {
+                if (error) {
+                    reject(error);
+                }
+            });
+        }
+        resolve();
+    });
+}
 
   /**
    * Método que crea un directorio si no existe.

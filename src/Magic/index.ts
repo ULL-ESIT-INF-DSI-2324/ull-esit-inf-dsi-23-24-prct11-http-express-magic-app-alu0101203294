@@ -69,7 +69,7 @@ function handleCommand(action: string, argv: any) {
       collection.readCard(argv.id);
       break;
     case 'remove':
-      collection.removeCard(argv.id);
+      //collection.removeCard(argv.id);
       break;
     default:
       console.log('Invalid command');

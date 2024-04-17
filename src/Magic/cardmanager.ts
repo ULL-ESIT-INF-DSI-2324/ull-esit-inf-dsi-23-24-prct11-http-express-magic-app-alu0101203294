@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+//import * as fs from 'fs';
 import chalk from 'chalk';
 import { Card } from './interfaces/card.js';
 import { FileManager } from './files.js';
@@ -69,22 +69,28 @@ export class CardCollection {
      * @param newCard 
      * @returns
      */
-    public addCard(newCard: Card): void {
+    public addCard(newCard: Card): Promise<void> {
         if (!newCard.color) {
             console.log(chalk.yellow('The card color is missing.'));
-            return;
+            return Promise.resolve();
         }
-
+    
         if (this.collection.some(card => card.id === newCard.id)) {
             console.log(chalk.yellow('The card with this ID already exists in the collection.'));
-            return;
+            return Promise.resolve();
         }
+    
         this.collection.push(newCard);
     
-        this.file.save(new Map(this.collection.map(card => [card.id, card])));
-    
-        console.log(chalk.green('Card added successfully.'));
+        return this.file.saveAsync(new Map(this.collection.map(card => [card.id, card])))
+            .then(() => {
+                console.log(chalk.green('Card added successfully.'));
+            })
+            .catch(error => {
+                console.error(chalk.red('Error adding card:'), error);
+            });
     }
+    
 
     /**
      * Método que actualiza una carta de la colección.
@@ -92,16 +98,23 @@ export class CardCollection {
      * @returns  Retorna una carta actualizada.
      * 
      */
-    public updateCard(updatedCard: Card): boolean {
+    public updateCard(updatedCard: Card): Promise<boolean> {
         const index = this.collection.findIndex(card => card.id === updatedCard.id);
         if (index !== -1) {
             this.collection[index] = updatedCard;
-            this.file.save(new Map(this.collection.map(card => [card.id, card])));
-            console.log(chalk.green('Card updated successfully.'));
-            return true;
+    
+            return this.file.saveAsync(new Map(this.collection.map(card => [card.id, card])))
+                .then(() => {
+                    console.log(chalk.green('Card updated successfully.'));
+                    return true;
+                })
+                .catch(error => {
+                    console.error(chalk.red('Error updating card:'), error);
+                    return false;
+                });
         } else {
             console.log(chalk.yellow('Card not found in the collection.'));
-            return false;
+            return Promise.resolve(false);
         }
     }
      
@@ -111,7 +124,7 @@ export class CardCollection {
      * @returns Retorna una carta eliminada.
      * 
      */
-    public removeCard(cardId: number): boolean {
+    /*public removeCard(cardId: number): boolean {
         const filePath = this.file.getFilePath(cardId);
         try {
             fs.unlinkSync(filePath);
@@ -132,7 +145,7 @@ export class CardCollection {
         }
     
         return false;
-    }
+    }*/
 
     /**
      * Método que lista las cartas de la colección.
